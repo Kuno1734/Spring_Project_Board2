@@ -1,6 +1,6 @@
 package com.sparta.Board_week2.entity;
 
-import lombok.AllArgsConstructor;
+import com.sparta.Board_week2.dto.SignupRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,10 +22,20 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false , length = 10)
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
     @Builder
-    public User(String username , String password){
-        this.username = username;
-        this.password= password;
+    public User(SignupRequestDto requestDto){
+        this.username = requestDto.getUsername();
+        this.password = requestDto.getPassword();
+
+        if(requestDto.getAdmin()){
+             this.role = UserRoleEnum.ADMIN;
+        } else {
+            this.role = UserRoleEnum.USER;
+        }
     }
 
 }
